@@ -1,29 +1,3 @@
-## Changelog...
-### Ver.0.2
-- Changes
-  - Added Point and Perk system. After getting enough points, you will get a choice of 2 perks to make gameplay easier. Each one stacks. Perks are lost on gameover regardless of your save settings.
-    - "Skip Video" Perk: Lets you skip a 1 video instead of playing it. You can hoard multiple skips.
-    - "Incease Die Size" Perk: Increase the size of the die you use for rolling, incrementally. (Customizable)
-    - "Decrease Invasion Chance" Perk: Decrease your invasion chance percentage. (Customizable)
-    - "Decrease Modifier Chance" Perk: Decrease your invasion chance percentage. (Customizable)
-  - Invasion and Modifier Chance settings now shown on UI.
-  - Invasion and Modifier Chance can increase at checkpoints
-  - New Settings
-    -  Perk Toggles
-    -  Perk Options
-    -  Multiple Invasions per Video
-    -  Invasion Increase at Checkpoints
-    -  Randomized Invasion and Modifier Chance
-    
-- Fixes
-  - Loading and Saving fixed. Game will now save and load at checkpoints if you have the option set to ON.
-  - When loading images, mpv will no longer load system files by mistake.
-  - Will no longer crash if a folder isn't found.
-  - Will no longer crash if value chance is set to zero.
-  - Default settings rebalanced.
-  
-
-
 # Fapland SP Ver.0.2
 ## What is FapLand SP?
 Fap Land Special Edition is a roguelike for playing FapHero rounds. 
@@ -76,3 +50,27 @@ PixelFH
 
 ### Original FapLand creator
 Malu
+
+## Changelog...
+### Ver.0.2
+- Changes
+  - Added Point and Perk system. After getting enough points, you will get a choice of 2 perks to make gameplay easier. Each one stacks. Perks are lost on gameover regardless of your save settings.
+    - "Skip Video" Perk: Lets you skip a 1 video instead of playing it. You can hoard multiple skips.
+    - "Incease Die Size" Perk: Increase the size of the die you use for rolling, incrementally. (Customizable)
+    - "Decrease Invasion Chance" Perk: Decrease your invasion chance percentage. (Customizable)
+    - "Decrease Modifier Chance" Perk: Decrease your invasion chance percentage. (Customizable)
+  - Invasion and Modifier Chance settings now shown on UI.
+  - Invasion and Modifier Chance can increase at checkpoints
+  - New Settings
+    -  Perk Toggles
+    -  Perk Options
+    -  Multiple Invasions per Video
+    -  Invasion Increase at Checkpoints
+    -  Randomized Invasion and Modifier Chance
+    
+- Fixes
+  - Loading and Saving fixed. Game will now save and load at checkpoints if you have the option set to ON.
+  - When loading images, mpv will no longer load system files by mistake.
+  - Will no longer crash if a folder isn't found.
+  - Will no longer crash if value chance is set to zero.
+  - Default settings rebalanced.
