@@ -26,6 +26,7 @@ file_config = fap_config['Custom_File_Locations']
 inv_config = fap_config['Invasions']
 mod_config = fap_config['Modifiers']
 gen_config = fap_config['General']
+perk_config=fap_config['Perks']
 time.sleep(0.5)
 
 #Configures Save Data
@@ -76,6 +77,11 @@ if path.exists("invasions") and inv_config["Invasion Rounds?"] == "ON":
 	invexist = True
 elif path.exists(inv_path) and inv_config["Invasion Rounds?"] == "ON":
 	invexist = True
+else:
+	print("")
+	print("-Invasions Folder was not found.-")
+	print("")
+	invexist = False
 if invexist:
 	print("Invasions Folder found!")
 	if listdir(inv_path):
@@ -86,11 +92,6 @@ if invexist:
 		print("-No Invasion Videos were found.-")
 		print("")
 		invexist = False
-else:
-	print("")
-	print("-Invasions Folder was not found.-")
-	print("")
-	invexist = False
 time.sleep(0.5)
 
 if path.exists("modifiers") and mod_config["Modifiers?"] == "ON":
@@ -112,6 +113,11 @@ if path.exists("intervals") and gen_config["Image Breaks between Rounds?"] == "O
 	intexist = True
 elif path.exists(int_path) and gen_config["Image Breaks between Rounds?"] == "ON":
 	intexist = True
+else:
+	print("")
+	print("-Invasions Folder was not found.-")
+	print("")
+	intexist = False
 if intexist:
 	print("Interval Images Folder Found!")
 	if listdir(int_path):
@@ -122,18 +128,14 @@ if intexist:
 		print("-No interval images were found.-")
 		print("")
 		intexist = False
-else:
-	print("")
-	print("-Invasions Folder was not found.-")
-	print("")
-	intexist = False
+
 time.sleep(0.5)
 
 time.sleep(0.5)
 print("")
 
 #Plays requested videos and processes invasions/modifiers
-def video(currentval):
+def video(currentval, invansionchance, modifierchance):
 	file = str(currentval)
 	if currentval == 1 and not path.exists("1.mp4"):
 		file = "1 - Start"
@@ -144,12 +146,12 @@ def video(currentval):
 			file = str(currentval) + " - End"
 	savepoint = 0
 	lastinv = 0
-	if int(inv_config["Invasion Chance Percentage"]) != 0:
-		power = random.randint (1, (100 // int(inv_config["Invasion Chance Percentage"]))*10)
+	if invansionchance > 0:
+		power = random.randint (1, (100 // invansionchance)*10)
 	else:
-		power = False
-	if int(mod_config["Modifier Chance Percentage"]) != 0:
-		moddy = random.randint (1, (100 // int(mod_config["Modifier Chance Percentage"])))
+		power = 100
+	if modifierchance > 0:
+		moddy = random.randint (1, (100 // modifierchance))
 	else: 
 		moddy = 100
 	while power < 10 and savepoint + 5 <= 80 and currentval % 25 != 0 and currentval != 1 and inv_config["Invasion Rounds?"] == "ON" and inv_config["Invasion Rounds During Videos?"] == "ON" and invexist:
@@ -164,7 +166,10 @@ def video(currentval):
 				print("")
 				os.system(mpv_path + "mpv.exe " + '"' + inv_path + invader + '"' + " -msg-level=all=no -fs")
 				inv_unpicked = False
-		power += 6 - (currentval // 25)
+		if inv_config["Multiple Invasions During Videos"] == "ON":
+			power += 6 - (currentval // 25)
+		else:
+			power += 10
 		print("Resuming...")
 		print("")
 		lastinv = invader
@@ -201,14 +206,21 @@ def video(currentval):
 	else:
 		os.system(mpv_path + "mpv.exe " + '"' + fl_path + file + '.mp4"' + " -msg-level=all=no -fs -start=" + str(savepoint) + "%")
 
-def image():
+def image(invasionchance):
 	if intexist and gen_config["Image Breaks between Rounds?"] == "ON":
 		imageFile = os.listdir(int_path)
-		random_file = random.choice(imageFile)
+		imagefound = False
+		while imagefound == False:
+			random_file = random.choice(imageFile)
+			name, ext = os.path.splitext(random_file)
+			if ext == ".png" or ext == ".jpg" or ext == ".jfif" or ext == ".jpeg" or ext == ".gif" or ext == ".mp4" or ext == ".webm":
+				imagefound = True
 		fullImagePath = int_path + random_file
 		breaktime = int(gen_config["Breaktime"])
-		power = random.randint(1, (100 // (int(inv_config["Invasion Chance Percentage"])/2))*10)
-		name, ext = os.path.splitext(random_file)
+		if invasionchance > 0:
+			power = random.randint(1, (100 // (invasionchance/2))*10)
+		else:
+			power = 100
 		if inv_config["Invasion Rounds During Break?"] == "ON" and power < 10 and invexist:
 			invader = random.choice(listdir(inv_path))
 			divsec = random.randint(1, breaktime)
@@ -232,9 +244,47 @@ class generalsettings():
 	def __init__(self):
 		self.breaktime = gen_config["Breaktime"]
 		self.checkp = gen_config["Start from Last Checkpoint?"]
+		if inv_config["Randomize Invasion Chance?"] == "ON":
+			self.inv == random.randint(5, 100)
+		else:
+			self.inv = int(inv_config["Invasion Chance Percentage"])
+		if mod_config["Randomize Modifier Chance?"] == "ON":
+			self.mod = random.randint(5, 100)
+		else:
+			self.mod = int(mod_config["Modifier Chance Percentage"])
+		self.checkmod = int(mod_config["Modifier Chance Increase on Checkpoint"])
+		self.checkinv = int(inv_config["Invasion Chance Increase on Checkpoint"])
+		self.invon = inv_config["Invasion Rounds?"]
+		self.modon = mod_config["Modifiers?"]
 
 def general():
 	return generalsettings()
+
+class perksettings():
+	def __init__(self):
+		perklist = []
+		if perk_config['"Die Size Increase" Perk'] == "ON":
+			perklist.append("Increase Die Size")
+		#if perk_config['"Double Roll" Perk'] == "ON":
+			#perklist.append("doubleroll")
+		if perk_config['"Video Skip" Perk'] == "ON":
+			perklist.append("Skip 1 Video")
+		#if perk_config['"Pause Video" Perk'] == "ON":
+			#perklist.append("Pause Each Video for 10 Seconds")
+		if perk_config['"Invasion Decrease" Perk'] == "ON" and inv_config["Invasion Rounds?"] == "ON":
+			perklist.append("Decrease Invasion Chance")
+		if perk_config['"Modifier Decrease" Perk'] == "ON" and mod_config["Modifiers?"] == "ON":
+			perklist.append("Decrease Modifier Chance")
+		self.rewardlist = perklist
+		self.morerollnum = int(perk_config["Increase Die Size by?"])
+		#self.pausenum = int(perk_config["Allowed Pause Time"])
+		self.invnum = int(perk_config["Decrease Invasion Chance by what %?"])
+		self.modnum = int(perk_config["Decrease Modifier Chance by what %?"])
+		self.ppp = int(perk_config["Points per Perk"])
+		self.perks = (perk_config["Perks?"])
+
+def perks():
+	return perksettings()
 
 #Gets save file data for main
 def loadsave():
@@ -244,10 +294,12 @@ def loadsave():
 		return 1
 
 def saveit(checkpoint):
-	if gen_config["Start from Last Checkpoint?"] == "ON":
-		configwrite.savedata(checkpoint)
+	#if gen_config["Start from Last Checkpoint?"] == "ON":
+	configwrite.savedata(checkpoint)
 
 def deletesave():
 	if path.exists("Savedata.txt"):
 		os.remove("SaveData.txt")
+
+
 random.seed(int(datetime.datetime.now().strftime("%Y%m%d%H%M%S")))
