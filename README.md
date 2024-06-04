@@ -68,9 +68,6 @@ Pack 2(Beats 2, Marcurial 2, Pendulum, Secret Island Invasion): https://gofile.i
 - You don't need to change the custom file locations in the settings file unless you change my folder structure or want to store the videos in a different place than the game.
 
 ## Credits
-### Fapland SP
-Nakkub
-
 ### Fapland Videos
 Sax, Ninza, Nananashi, Bastati, PsychoSplash, DannySir, N_N, OP is a f*ggot, Reverd, P, Raptor, Gu, Fryz3, Phantom Fapper, theblackndsage, SNanaya
 
