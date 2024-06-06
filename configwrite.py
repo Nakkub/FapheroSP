@@ -16,9 +16,9 @@ def loadconfig():
         "Randomize Invasion Chance?": "OFF",
         "Invasion Chance Percentage": 25,
         "Invasion Rounds During Videos?": "ON",
-        "Invasion Rounds During Break?": "ON",
+        "Invasion Rounds During Break?": "OFF",
         "Multiple Invasions During Videos": "ON",
-        "Invasion Chance Increase on Checkpoint": 15
+        "Invasion Chance Increase on Checkpoint": 10
 
     }
 
@@ -34,17 +34,34 @@ def loadconfig():
 
     config["Perks"] = {
         "Perks?": "ON",
-        "Points per Perk": 3,
+        "Points per Perk": 2,
         '"Die Size Increase" Perk': "ON",
         "Increase Die Size by?": 2,
         '"Video Skip" Perk': "ON",
-        #'"Pause Video" Perk': "ON",
-        #"Allowed Pause Time": 10,
+        '"No Invasions Next Round" Perk': "ON",
         '"Invasion Decrease" Perk': "ON",
         "Decrease Invasion Chance by what %?": 10, 
         '"Modifier Decrease" Perk': "ON",
         "Decrease Modifier Chance by what %?": 10
   
+    }
+    
+    config["Curses"] = {
+        "Curses?": "ON",
+        "Base Curse Chance Percentage on Invasion": 25,
+        "Chance of Curse Increase per Invasion": 3,
+        "Chance of Curse Increase per Checkpoints": 7,
+        '"Decrease Die Max Size" Curse': "ON",
+        "Decrease Die Max by?": 2,
+        '"Decrease Die Min Size" Curse': "ON",
+        "Decrease Die Min by?": 2,
+        '"Invasion Increase" Curse': "ON",
+        "Increase Invasion Chance by what %?": 10, 
+        '"Modifier Increase" Curse': "ON",
+        "Increase Modifier Chance by what %?": 10,
+        '"Go Back" Curse': "ON",
+        "Max Rounds to go back?": 5,
+
     }
 
     config["Custom_File_Locations"] = {
@@ -56,7 +73,7 @@ def loadconfig():
     }
 
     with open("Game_Settings.txt", "w") as (my_settings):
-            config.write(my_settings)
+            config.write(my_settings, space_around_delimiters=False)
 
 def savedata(currentcheckpoint):
     save = ConfigParser()
@@ -67,4 +84,4 @@ def savedata(currentcheckpoint):
     }
 
     with open("SaveData.txt", "w") as (my_save):
-            save.write(my_save)
+            save.write(my_save, space_around_delimiters=False)
