@@ -27,6 +27,7 @@ inv_config = fap_config['Invasions']
 mod_config = fap_config['Modifiers']
 gen_config = fap_config['General']
 perk_config=fap_config['Perks']
+curse_config=fap_config['Curses']
 time.sleep(0.5)
 
 #Configures Save Data
@@ -137,6 +138,7 @@ print("")
 #Plays requested videos and processes invasions/modifiers
 def video(currentval, invansionchance, modifierchance):
 	file = str(currentval)
+	invaded = False
 	if currentval == 1 and not path.exists("1.mp4"):
 		file = "1 - Start"
 	elif currentval % 25 == 0 and not path.exists("25.mp4"):
@@ -150,11 +152,12 @@ def video(currentval, invansionchance, modifierchance):
 		power = random.randint (1, (100 // invansionchance)*10)
 	else:
 		power = 100
+	print("power=" + str(power))
 	if modifierchance > 0:
 		moddy = random.randint (1, (100 // modifierchance))
 	else: 
 		moddy = 100
-	while power < 10 and savepoint + 5 <= 80 and currentval % 25 != 0 and currentval != 1 and inv_config["Invasion Rounds?"] == "ON" and inv_config["Invasion Rounds During Videos?"] == "ON" and invexist:
+	while power <= 10 and savepoint + 5 <= 80 and currentval % 25 != 0 and currentval != 1 and inv_config["Invasion Rounds?"] == "ON" and inv_config["Invasion Rounds During Videos?"] == "ON" and invexist:
 		surprise = random.randint(savepoint + 5, 80)
 		os.system(mpv_path + "mpv.exe " + '"' + fl_path + file + '.mp4"' + " -msg-level=all=no -fs -start=" + str(savepoint) + "%" + " -end=" + str(surprise) + "%")
 		savepoint = surprise
@@ -162,12 +165,13 @@ def video(currentval, invansionchance, modifierchance):
 		while inv_unpicked:
 			invader = random.choice(listdir(inv_path))
 			if invader != lastinv:
+				invaded = 1
 				print("Invasion!")
 				print("")
 				os.system(mpv_path + "mpv.exe " + '"' + inv_path + invader + '"' + " -msg-level=all=no -fs")
 				inv_unpicked = False
 		if inv_config["Multiple Invasions During Videos"] == "ON":
-			power += 6 - (currentval // 25)
+			power += 7 - (currentval // 25)
 		else:
 			power += 10
 		print("Resuming...")
@@ -205,8 +209,11 @@ def video(currentval, invansionchance, modifierchance):
 
 	else:
 		os.system(mpv_path + "mpv.exe " + '"' + fl_path + file + '.mp4"' + " -msg-level=all=no -fs -start=" + str(savepoint) + "%")
+	
+	return invaded
 
 def image(invasionchance):
+	invaded = False
 	if intexist and gen_config["Image Breaks between Rounds?"] == "ON":
 		imageFile = os.listdir(int_path)
 		imagefound = False
@@ -218,10 +225,10 @@ def image(invasionchance):
 		fullImagePath = int_path + random_file
 		breaktime = int(gen_config["Breaktime"])
 		if invasionchance > 0:
-			power = random.randint(1, (100 // (invasionchance/2))*10)
+			power = random.randint(1, (100 // invasionchance)*10)
 		else:
 			power = 100
-		if inv_config["Invasion Rounds During Break?"] == "ON" and power < 10 and invexist:
+		if inv_config["Invasion Rounds During Break?"] == "ON" and power <= 10 and invexist:
 			invader = random.choice(listdir(inv_path))
 			divsec = random.randint(1, breaktime)
 			if ext == ".gif" or ext == ".mp4" or ext == ".webm":
@@ -231,6 +238,7 @@ def image(invasionchance):
 				os.system(mpv_path + "mpv.exe - -fs --image-display-duration=" + str(divsec) + ' "' + fullImagePath + '"' 
 				+ ' -sub-file="modifiers/interval.srt" -sub-scale=0.7 -sub-pos=0 -sub-color=1.0/1.0/1.0/0.8 -sub-border-size=0 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.2')
 			os.system(mpv_path + "mpv.exe " + '"' + inv_path + invader + '"' + " -msg-level=all=no -fs")
+			invaded = 1
 			breaktime = breaktime - divsec
 		if ext == ".gif" or ext == ".mp4" or ext == ".webm":
 			os.system(mpv_path + "mpv.exe " + '"' + fullImagePath + '"' + " -msg-level=all=no -fs -loop-file=" + str(breaktime)
@@ -238,6 +246,7 @@ def image(invasionchance):
 		else:
 			os.system(mpv_path + "mpv.exe - -fs --image-display-duration=" + str(breaktime) + ' "' + fullImagePath + '"'
 			+ ' -sub-file="modifiers/interval.srt" -sub-scale=0.7 -sub-pos=0 -sub-color=1.0/1.0/1.0/0.8 -sub-border-size=0 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.2')
+	return invaded
 
 #Gets general settings in class
 class generalsettings():
@@ -245,7 +254,7 @@ class generalsettings():
 		self.breaktime = gen_config["Breaktime"]
 		self.checkp = gen_config["Start from Last Checkpoint?"]
 		if inv_config["Randomize Invasion Chance?"] == "ON":
-			self.inv == random.randint(5, 100)
+			self.inv = random.randint(5, 100)
 		else:
 			self.inv = int(inv_config["Invasion Chance Percentage"])
 		if mod_config["Randomize Modifier Chance?"] == "ON":
@@ -271,10 +280,15 @@ class perksettings():
 			perklist.append("Skip 1 Video")
 		#if perk_config['"Pause Video" Perk'] == "ON":
 			#perklist.append("Pause Each Video for 10 Seconds")
-		if perk_config['"Invasion Decrease" Perk'] == "ON" and inv_config["Invasion Rounds?"] == "ON":
-			perklist.append("Decrease Invasion Chance")
+		if inv_config["Invasion Rounds?"] == "ON":
+			if perk_config['"Invasion Decrease" Perk'] == "ON":
+				perklist.append("Decrease Invasion Chance")
+			if perk_config['"No Invasions Next Round" Perk'] == "ON":
+				perklist.append("No Invasions Next Round")			
 		if perk_config['"Modifier Decrease" Perk'] == "ON" and mod_config["Modifiers?"] == "ON":
 			perklist.append("Decrease Modifier Chance")
+
+		
 		self.rewardlist = perklist
 		self.morerollnum = int(perk_config["Increase Die Size by?"])
 		#self.pausenum = int(perk_config["Allowed Pause Time"])
@@ -282,9 +296,36 @@ class perksettings():
 		self.modnum = int(perk_config["Decrease Modifier Chance by what %?"])
 		self.ppp = int(perk_config["Points per Perk"])
 		self.perks = (perk_config["Perks?"])
-
 def perks():
 	return perksettings()
+
+class cursesettings():
+	def __init__(self):
+		curselist = []
+		if curse_config['"Decrease Die Max Size" Curse'] == "ON":
+			curselist.append("Decreased Die's Maximum Size!")
+		if curse_config['"Decrease Die Min Size" Curse'] == "ON":
+			curselist.append("Decreased Die's Minimum Size!")		
+		if curse_config['"Invasion Increase" Curse'] == "ON":
+			curselist.append("Invasion Chance Increased!")				
+		if curse_config['"Modifier Increase" Curse'] == "ON":
+			curselist.append("Modifier Chance Increased!")
+		if curse_config['"Go Back" Curse'] == "ON" and int(curse_config["Max Rounds to go back?"]) > 0:
+			curselist.append("Moving Back X Rounds!")
+		self.curselist = curselist
+		self.curse = (curse_config["Curses?"])
+		self.movebackmax = int(curse_config["Max Rounds to go back?"])
+		self.baseinv = int(curse_config["Base Curse Chance Percentage on Invasion"])
+		self.invnum = int(curse_config["Increase Invasion Chance by what %?"])
+		self.modnum = int(curse_config["Increase Modifier Chance by what %?"])
+		self.invinc = int(curse_config["Chance of Curse Increase per Invasion"])
+		self.invinc_checkp = int(curse_config["Chance of Curse Increase per Checkpoints"])
+		self.diemindec = int(curse_config["Decrease Die Min by?"])
+		self.diemaxdec = int(curse_config["Decrease Die Max by?"])
+
+def curses():
+	return cursesettings()	
+
 
 #Gets save file data for main
 def loadsave():
