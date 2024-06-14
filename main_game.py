@@ -230,7 +230,6 @@ def maingame():
                         print("")
                         invaded_check += logic.image(invasionchance)
                     loadvideo = False
-                    print(invaded_check)
                     if (cursechance + (curse_set.invinc * invaded_check)) <= 100:
                         cursechance += curse_set.invinc * invaded_check
                     else:
@@ -259,9 +258,7 @@ def maingame():
             if reward:
                 if perkprimed == False:
                     choice1 = random.choice(perklist)
-                    print(choice1)
                     perklist2 = perklist.copy()
-                    print(perklist2)
                     perklist2.remove(choice1)
                     choice2 = random.choice(perklist2)
                     perkprimed = True
@@ -422,11 +419,11 @@ def maingame():
             #savebox = pygame.Rect.scale_by(SAVEON.text_rect, 1.2, 1.6)
             #pygame.draw.rect(screen, 'white', savebox, 3)
 
-        if room == 1:
+        if room == 1 and canplay:
             CHECK = command.Button(image=None,pos=(400,150), text_input= "Play Intro?", font=get_font(20), base_color="white", hovering_color="grey")
-        elif room < 100:
+        elif room < 100 and canplay:
             CHECK = command.Button(image=None,pos=(400,150), text_input= "Play Checkpoint?", font=get_font(20), base_color="white", hovering_color="grey")
-        if room >= 100:
+        if room >= 100 and canplay:
             CHECK = command.Button(image=None,pos=(400,180), text_input= "You Win!", font=get_font(20), base_color="white", hovering_color="grey")
         if canplay:
             CHECK.changeColor(PLAY_MOUSE)
