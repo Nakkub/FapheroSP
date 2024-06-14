@@ -54,11 +54,17 @@ Malu
 ## Changelog...
 ### Ver.0.3
 - Changes
-  - Added Curse system. Every round has the chance of applying a "curse". A debuff that can make the game a little harder.
-    - "Go Back" Curse: Sends you back a random amount of rounds (Customizable)
-    - "Increase Invasion Chance" Curse:
--Fixes
-  - Fixed crash from the perk system when playing for an extended period.
+  - Added Curse system. Every round has a chance to give a negative effect called a curse. The chance increases with every invasion.
+    - "Go Back" Curse: Sends you back a few rounds. (Customizable)
+    - "Decrease Die Max Size" Curse: Decrease the max size of the die you use for rolling, incrementally. (Customizable)
+    - "Invasion Increase" Curse: Increase your invasion chance percentage. (Customizable)
+    - "Modifier Increase" Curse: Increase your invasion chance percentage. (Customizable)
+    - Curse Chance can increase during Invasions and Checkpoints. (Customizable)
+  - New Settings
+    -  Curse Toggles
+    -  Curse Options
+- Fixes
+  - Fixed crash when perk list was depleted.
 ### Ver.0.2
 - Changes
   - Added Point and Perk system. After getting enough points, you will get a choice of 2 perks to make gameplay easier. Each one stacks. Perks are lost on gameover regardless of your save settings.
