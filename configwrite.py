@@ -48,7 +48,7 @@ def loadconfig():
     
     config["Curses"] = {
         "Curses?": "ON",
-        "Base Curse Chance Percentage on Invasion": 25,
+        "Base Curse Chance Percentage on Invasion": 20,
         "Chance of Curse Increase per Invasion": 3,
         "Chance of Curse Increase per Checkpoints": 7,
         '"Decrease Die Max Size" Curse': "ON",
