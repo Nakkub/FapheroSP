@@ -152,7 +152,6 @@ def video(currentval, invansionchance, modifierchance):
 		power = random.randint (1, (100 // invansionchance)*10)
 	else:
 		power = 100
-	print("power=" + str(power))
 	if modifierchance > 0:
 		moddy = random.randint (1, (100 // modifierchance))
 	else: 
