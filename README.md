@@ -1,4 +1,4 @@
-# Fapland SP Ver.0.2
+# Fapland SP Ver.0.3
 ## What is FapLand SP?
 Fap Land Special Edition is a roguelike for playing FapHero rounds. 
 Each fap hero round is like a space on a game board.
