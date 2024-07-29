@@ -5,13 +5,15 @@ Each fap hero round is like a space on a game board.
 You must get to 100 to win.
 
 ## Installation
+- Download the most recent release here: https://github.com/Nakkub/FapheroSP/releases (Will be under assets. Called Fapland.SP.Ver.0.X.zip)
+
 - Place the 100 videos from Original Fapland in the "Fapland Videos" folder. Can be found here:
 
 Part 1(1-65): https://mega.nz/#F!ckNSjADD!sh8KuJGzKGlYgKDv25kiFQ
 
 Part 2(66-100): https://mega.nz/#F!EpNkjY7I!yNNrmuaoK_YlZq5weeuePA
 
-- Place Invasion Videos in "invasion" folder. Any videos are allowed, but you can find invasions video packs here:
+- Place Invasion Videos in "invasion" folder. Any videos are allowed, but you can find invasions video packs here (Unpack the videos into the invasions folder):
 
 Pack 1(Beats 3): https://gofile.io/d/lDki80
 
