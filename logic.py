@@ -185,21 +185,21 @@ def video(currentval, invansionchance, modifierchance):
 				unpicked = False
 				print("Modifier: Speed Up")
 				print("")
-				os.system(mpv_path + "mpv.exe " + '"' + mod_path + "Speed Up" + '.mp4"' + " -msg-level=all=no -fs")
+				os.system(mpv_path + "mpv.exe " + '"' + mod_path + "Speed Up" + '.mp4"' + " -msg-level=all=no -fs -ontop")
 				os.system(mpv_path + "mpv.exe " + '"' + fl_path + file + '.mp4"' + " -msg-level=all=no -fs -start=" + str(savepoint) + "%" +" -speed=1.20"
 				+ ' -ontop -sub-file="modifiers/Speed_Up.srt" -sub-scale=0.7 -sub-pos=0 -sub-color=1.0/1.0/1.0/0.55 -sub-border-size=0 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.2')
 			elif modifier == 2 and mod_config["Squeeze Shaft Modifier"] == "ON":
 				unpicked = False
 				print("Modifier: Squeeze Shaft")
 				print("")
-				os.system(mpv_path + "mpv.exe " + '"' + mod_path + "SQUEEZE SHAFT" + '.mp4"' + " -msg-level=all=no -fs")
+				os.system(mpv_path + "mpv.exe " + '"' + mod_path + "SQUEEZE SHAFT" + '.mp4"' + " -msg-level=all=no -fs -ontop")
 				os.system(mpv_path + "mpv.exe " + '"' + fl_path + file + '.mp4"' + " -msg-level=all=no -fs -start=" + str(savepoint) + "%"
 			  	+ ' -ontop -sub-file="modifiers/SQUEEZE_SHAFT.srt" -sub-scale=0.7 -sub-pos=1 -sub-color=1.0/0.2/0.2/0.55 -sub-border-size=0 -sub-bold=yes -sub-font="Impact" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.3')
 			elif modifier == 3 and mod_config["Hold Breath Modifier"] == "ON":
 				unpicked = False
 				print("Modifier: Hold Breath")
 				print("")
-				os.system(mpv_path + "mpv.exe " + '"' + mod_path + "Hold Breath" + '.mp4"' + " -msg-level=all=no -fs")
+				os.system(mpv_path + "mpv.exe " + '"' + mod_path + "Hold Breath" + '.mp4"' + " -msg-level=all=no -fs -ontop")
 				os.system(mpv_path + "mpv.exe " + '"' + fl_path + file + '.mp4"' + " -msg-level=all=no -fs -start=" + str(savepoint) + "%"
 			  	+ ' -ontop -sub-file="modifiers/Hold_Breath.srt" -sub-scale=1.0 -sub-pos=1 -sub-color=1.0/1.0/1.0/0.55 -sub-border-size=2 -sub-border-color=0.0/0.0/0.0/0.55 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.3')
 			elif mod_config["Hold Breath Modifier"] == "OFF" and mod_config["Speed Up Modifier"] == "OFF" and mod_config["Squeeze Shaft Modifier"] == "OFF":
