@@ -58,11 +58,15 @@ def maingame():
     modifierchance = gen_set.mod
     pointsperperk = perk_set.ppp
     checkpointon = gen_set.checkp
-    cursechance =  curse_set.baseinv
+    cursechance = curse_set.baseinv
     invaded_check = 0
+    applycurse = 0
+    moveback = 0
 
     #Checks the savedata for checkpoint(Will return 1 if no save)
     room = logic.loadsave()
+    playroom = room
+    shuffle = gen_set.ranround
     preroom = 1
     pausetime = 2
     pause = pausetime
@@ -73,8 +77,8 @@ def maingame():
     dierollface = 1
     rollingtime = 20
     diefacecolor = 'grey'
-    lowestroll=1
-    highestroll=6
+    lowestroll = gen_set.diemin
+    highestroll = gen_set.diemax
 
     #Game States
     canplay = True
@@ -199,13 +203,9 @@ def maingame():
                         pause -= 1
                 else:
                     pause = pausetime
-                    if preroom % 25 > room % 25:
+                    if preroom % 25 > room % 25 and room > preroom:
                         if checkpointon == "ON":
                             logic.saveit(str(room - room%25))
-                            if cursechance + curse_set.invinc_checkp > 100:
-                                cursechance = 100
-                            else:    
-                                cursechance += curse_set.invinc_checkp
                         if invasionchance + gen_set.checkinv > 100:
                             invasionchance = 100
                         else:
@@ -218,23 +218,32 @@ def maingame():
                             logic.video(room - room%25, invasionchance, modifierchance)
                     if room < 100:
                         if room % 25 != 0:
-                            print("Playing Round #" + str(room))
+                            if shuffle == "ON":
+                                playroom = random.randint(2, 99)
+                                while playroom % 25 == 0:
+                                    playroom = random.randint(2, 99)
+                                print("playroom" + str(playroom))
+                                print("")
+                                print("Playing Random Round...")
+                            else:
+                                playroom = room    
+                                print("Playing Round #" + str(room))
                             print("")
                             played += 1
                         if "No Invasions Next Round" in myperks:
-                            invaded_check += logic.video(room, 0, modifierchance)
+                            logic.video(playroom, 0, modifierchance)
                             myperks.remove("No Invasions Next Round")
                         else:
-                            invaded_check += logic.video(room, invasionchance, modifierchance)
+                            invaded_check += logic.video(playroom, invasionchance, modifierchance)
                         print("Break")
                         print("")
                         invaded_check += logic.image(invasionchance)
+                    print("Encountered " + str(invaded_check) + " invasions...")
+                    print("")
                     loadvideo = False
-                    if (cursechance + (curse_set.invinc * invaded_check)) <= 100:
-                        cursechance += curse_set.invinc * invaded_check
-                    else:
-                        cursechance = 100
-                    applycurse = random.randint(1, 100 // cursechance)
+                    while invaded_check >= 1 and applycurse != 1 and cursechance > 0:
+                        applycurse = random.randint(1, 100 // cursechance)
+                        invaded_check -= 1
                     if curse_set.curse == "ON" and applycurse == 1:
                         print("Cursed!")
                         cursed = True
@@ -246,11 +255,14 @@ def maingame():
                     else:
                         canplay = True
                     invaded_check = 0
+                    applycurse = 0
             
 
             if cursed:
                 if curseprimed == False:
                     curse = random.choice(curselist)
+                    if curse == "Moving Back X Rounds!":
+                        moveback = random.randint(1, curse_set.movebackmax)
                     curseprimed = True
                     
 
@@ -281,7 +293,10 @@ def maingame():
                     myperks.remove("Decrease Modifier Chance")
                 
                 if "Decreased Die's Maximum Size!" in mycurses:
-                    highestroll = highestroll - curse_set.diemaxdec
+                    if highestroll - curse_set.diemaxdec >= 1:
+                        highestroll = highestroll - curse_set.diemaxdec
+                    else:
+                        highestroll = 1
                     mycurses.remove("Decreased Die's Maximum Size!")
                 if "Decreased Die's Minimum Size!" in mycurses:
                     lowestroll = lowestroll - curse_set.diemindec
@@ -299,11 +314,11 @@ def maingame():
                         modifierchance += curse_set.modnum
                     mycurses.remove("Modifier Chance Increased!")
                 if "Moving Back X Rounds!" in mycurses:
-                    moveback = random.randint(1, curse_set.movebackmax)
                     if room - moveback < 1:
                         room = 1
                     else:
                         room -= moveback
+                    mycurses.remove("Moving Back X Rounds!")
                 if played % pointsperperk == 0 and perk_set.perks == "ON" and cursed:
                     print("Perk!")
                     perkprimed = False
@@ -333,7 +348,9 @@ def maingame():
 
         #if (preroom % 25 > room % 25 or room % 25 == 0) or gen_set.checkp == "ON" or room == 1:
         #if :
-        draw_text_center("Checkpoint: " + str(room - room%25) +"%", get_font(20), text_color, 400, 480)
+        draw_text_center("Checkpoint: " + str(room - room%25) +"%", get_font(20), text_color, 400, 470)
+        if shuffle == "ON":
+            draw_text_center("*Random Rounds*", get_font(20), text_color, 400, 500)
         if gen_set.invon == "ON":
             draw_text_center("Invasion Chance: " + str(invasionchance) +"%", get_font(20), text_color, 400, 525)
         if gen_set.modon == "ON":
@@ -341,7 +358,11 @@ def maingame():
         draw_text_center("Save Progress?: " + checkpointon, get_font(20), text_color, 400, 575)
 
         if room < 100 and loadvideo:
-            draw_text_center("Playing Round: " + str(room), get_font(20), text_color, 400, 300)
+            if shuffle == "ON":
+                draw_text_center("Playing Random Round...", get_font(20), text_color, 400, 300)               
+            else:
+                draw_text_center("Playing Round: " + str(room), get_font(20), text_color, 400, 300)
+
 
         if rolling or addroll:
             draw_text_center(str(dierollface), get_font(35), diefacecolor, 400, 250)
@@ -407,6 +428,12 @@ def maingame():
             confirmbox = pygame.Rect.scale_by(CONFIRM.text_rect, 1.2, 1.6)
             pygame.draw.rect(screen, 'red', confirmbox, 3)
             draw_text_center(curse, get_font(16), "red", 400, 230)
+            if curse == "Moving Back X Rounds!":
+                draw_text_center("By " + str(moveback) + " rounds", get_font(16), "red", 400, 255)
+            if curse == "Decreased Die's Maximum Size!":
+                draw_text_center("By " + str(curse_set.diemaxdec), get_font(16), "red", 400, 255)
+            if curse == "Decreased Die's Minimum Size!":
+                draw_text_center("By " + str(curse_set.diemindec), get_font(16), "red", 400, 255)
             draw_text_center("That Round carried a curse!", get_font(25), "red", 400, 170)
             
 
