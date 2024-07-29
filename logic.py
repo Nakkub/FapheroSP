@@ -254,11 +254,11 @@ class generalsettings():
 		self.breaktime = gen_config["Breaktime"]
 		self.checkp = gen_config["Start from Last Checkpoint?"]
 		if random_config["Randomize Invasion Chance?"] == "ON":
-			self.inv = random.randint(5, 100)
+			self.inv = random.randint(1, int(inv_config["Invasion Chance Cap"]))
 		else:
 			self.inv = int(inv_config["Invasion Chance Percentage"])
 		if random_config["Randomize Modifier Chance?"] == "ON":
-			self.mod = random.randint(5, 100)
+			self.mod = random.randint(1, int(mod_config["Modifier Chance Cap"]))
 		else:
 			self.mod = int(mod_config["Modifier Chance Percentage"])
 		self.checkmod = int(mod_config["Modifier Chance Increase on Checkpoint"])
@@ -268,6 +268,8 @@ class generalsettings():
 		self.diemin = int(gen_config["Default Die Min Size"])
 		self.diemax = int(gen_config["Default Die Max Size"])
 		self.ranround = random_config["Randomized Rounds"]
+		self.modcap = int(mod_config["Modifier Chance Cap"])
+		self.invcap = int(inv_config["Invasion Chance Cap"])
 def general():
 	return generalsettings()
 
