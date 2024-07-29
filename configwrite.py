@@ -15,7 +15,7 @@ def loadconfig():
 
     config["Invasions"] = {
         "Invasion Rounds?": "ON",
-        "Randomize Invasion Chance?": "OFF",
+        "Invasion Chance Cap": 100,
         "Invasion Chance Percentage": 25,
         "Invasion Rounds During Videos?": "ON",
         "Invasion Rounds During Break?": "OFF",
@@ -26,7 +26,7 @@ def loadconfig():
 
     config["Modifiers"] = {
         "Modifiers?": "ON",
-        "Randomize Modifier Chance?": "OFF",
+        "Modifier Chance Cap": 100,
         "Modifier Chance Percentage": 25,
         "Speed Up Modifier": "ON",
         "Squeeze Shaft Modifier": "ON",
