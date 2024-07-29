@@ -8,6 +8,8 @@ def loadconfig():
         "Start from Last Checkpoint?": "OFF",
         "Image Breaks between Rounds?": "ON",
         "Breaktime": 10,
+        "Default Die Min Size": 1,
+        "Default Die Max Size": 6
 
     }
 
@@ -48,9 +50,7 @@ def loadconfig():
     
     config["Curses"] = {
         "Curses?": "ON",
-        "Base Curse Chance Percentage on Invasion": 20,
-        "Chance of Curse Increase per Invasion": 3,
-        "Chance of Curse Increase per Checkpoints": 7,
+        "Chance of Curse Per Invasion": 20,
         '"Decrease Die Max Size" Curse': "ON",
         "Decrease Die Max by?": 2,
         '"Decrease Die Min Size" Curse': "ON",
@@ -62,6 +62,12 @@ def loadconfig():
         '"Go Back" Curse': "ON",
         "Max Rounds to go back?": 5,
 
+    }
+
+    config["Randomization"] = {
+          "Randomized Rounds": "OFF",
+          "Randomize Invasion Chance?": "OFF",
+          "Randomize Modifier Chance?": "OFF"
     }
 
     config["Custom_File_Locations"] = {
