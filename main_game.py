@@ -98,6 +98,7 @@ def maingame():
     curselist = curse_set.curselist
     myperks = []
     mycurses = []
+    playlist = []
     #Game loop starts here
     while run:
         for event in pygame.event.get():
@@ -220,10 +221,12 @@ def maingame():
                         if room % 25 != 0:
                             if shuffle == "ON":
                                 playroom = random.randint(2, 99)
-                                while playroom % 25 == 0:
+                                while playroom % 25 == 0 or playroom in playlist:
                                     playroom = random.randint(2, 99)
-                                print("playroom" + str(playroom))
-                                print("")
+                                if len(playlist) >= 95:
+                                    playlist = []
+                                else:
+                                    playlist.append(playroom)
                                 print("Playing Random Round...")
                             else:
                                 playroom = room    
@@ -326,10 +329,13 @@ def maingame():
                 else:
                     reward = False
                     canplay = True
+
+
                 activate = False
                 cursed = False
 
-                
+        if lowestroll > highestroll:
+            lowestroll = highestroll - 1                
         #Black Background
         screen.fill("black")
 
