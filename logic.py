@@ -28,6 +28,7 @@ mod_config = fap_config['Modifiers']
 gen_config = fap_config['General']
 perk_config=fap_config['Perks']
 curse_config=fap_config['Curses']
+random_config=fap_config["Randomization"]
 time.sleep(0.5)
 
 #Configures Save Data
@@ -138,7 +139,7 @@ print("")
 #Plays requested videos and processes invasions/modifiers
 def video(currentval, invansionchance, modifierchance):
 	file = str(currentval)
-	invaded = False
+	invaded = 0
 	if currentval == 1 and not path.exists("1.mp4"):
 		file = "1 - Start"
 	elif currentval % 25 == 0 and not path.exists("25.mp4"):
@@ -158,16 +159,16 @@ def video(currentval, invansionchance, modifierchance):
 		moddy = 100
 	while power <= 10 and savepoint + 5 <= 80 and currentval % 25 != 0 and currentval != 1 and inv_config["Invasion Rounds?"] == "ON" and inv_config["Invasion Rounds During Videos?"] == "ON" and invexist:
 		surprise = random.randint(savepoint + 5, 80)
-		os.system(mpv_path + "mpv.exe " + '"' + fl_path + file + '.mp4"' + " -msg-level=all=no -fs -start=" + str(savepoint) + "%" + " -end=" + str(surprise) + "%")
+		os.system(mpv_path + "mpv.exe " + '"' + fl_path + file + '.mp4"' + " -msg-level=all=no -fs -start=" + str(savepoint) + "%" + " -end=" + str(surprise) + "%" + " -ontop")
 		savepoint = surprise
 		inv_unpicked = True
 		while inv_unpicked:
 			invader = random.choice(listdir(inv_path))
 			if invader != lastinv:
-				invaded = 1
+				invaded += 1
 				print("Invasion!")
 				print("")
-				os.system(mpv_path + "mpv.exe " + '"' + inv_path + invader + '"' + " -msg-level=all=no -fs")
+				os.system(mpv_path + "mpv.exe " + '"' + inv_path + invader + '"' + " -ontop -msg-level=all=no -fs")
 				inv_unpicked = False
 		if inv_config["Multiple Invasions During Videos"] == "ON":
 			power += 7 - (currentval // 25)
@@ -186,21 +187,21 @@ def video(currentval, invansionchance, modifierchance):
 				print("")
 				os.system(mpv_path + "mpv.exe " + '"' + mod_path + "Speed Up" + '.mp4"' + " -msg-level=all=no -fs")
 				os.system(mpv_path + "mpv.exe " + '"' + fl_path + file + '.mp4"' + " -msg-level=all=no -fs -start=" + str(savepoint) + "%" +" -speed=1.20"
-				+ ' -sub-file="modifiers/Speed_Up.srt" -sub-scale=0.7 -sub-pos=0 -sub-color=1.0/1.0/1.0/0.55 -sub-border-size=0 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.2')
+				+ ' -ontop -sub-file="modifiers/Speed_Up.srt" -sub-scale=0.7 -sub-pos=0 -sub-color=1.0/1.0/1.0/0.55 -sub-border-size=0 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.2')
 			elif modifier == 2 and mod_config["Squeeze Shaft Modifier"] == "ON":
 				unpicked = False
 				print("Modifier: Squeeze Shaft")
 				print("")
 				os.system(mpv_path + "mpv.exe " + '"' + mod_path + "SQUEEZE SHAFT" + '.mp4"' + " -msg-level=all=no -fs")
 				os.system(mpv_path + "mpv.exe " + '"' + fl_path + file + '.mp4"' + " -msg-level=all=no -fs -start=" + str(savepoint) + "%"
-			  	+ ' -sub-file="modifiers/SQUEEZE_SHAFT.srt" -sub-scale=0.7 -sub-pos=1 -sub-color=1.0/0.2/0.2/0.55 -sub-border-size=0 -sub-bold=yes -sub-font="Impact" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.3')
+			  	+ ' -ontop -sub-file="modifiers/SQUEEZE_SHAFT.srt" -sub-scale=0.7 -sub-pos=1 -sub-color=1.0/0.2/0.2/0.55 -sub-border-size=0 -sub-bold=yes -sub-font="Impact" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.3')
 			elif modifier == 3 and mod_config["Hold Breath Modifier"] == "ON":
 				unpicked = False
 				print("Modifier: Hold Breath")
 				print("")
 				os.system(mpv_path + "mpv.exe " + '"' + mod_path + "Hold Breath" + '.mp4"' + " -msg-level=all=no -fs")
 				os.system(mpv_path + "mpv.exe " + '"' + fl_path + file + '.mp4"' + " -msg-level=all=no -fs -start=" + str(savepoint) + "%"
-			  	+ ' -sub-file="modifiers/Hold_Breath.srt" -sub-scale=1.0 -sub-pos=1 -sub-color=1.0/1.0/1.0/0.55 -sub-border-size=2 -sub-border-color=0.0/0.0/0.0/0.55 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.3')
+			  	+ ' -ontop -sub-file="modifiers/Hold_Breath.srt" -sub-scale=1.0 -sub-pos=1 -sub-color=1.0/1.0/1.0/0.55 -sub-border-size=2 -sub-border-color=0.0/0.0/0.0/0.55 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.3')
 			elif mod_config["Hold Breath Modifier"] == "OFF" and mod_config["Speed Up Modifier"] == "OFF" and mod_config["Squeeze Shaft Modifier"] == "OFF":
 				print("No Modifiers Active...")
 				print("")
@@ -212,7 +213,7 @@ def video(currentval, invansionchance, modifierchance):
 	return invaded
 
 def image(invasionchance):
-	invaded = False
+	invaded = 0
 	if intexist and gen_config["Image Breaks between Rounds?"] == "ON":
 		imageFile = os.listdir(int_path)
 		imagefound = False
@@ -231,20 +232,20 @@ def image(invasionchance):
 			invader = random.choice(listdir(inv_path))
 			divsec = random.randint(1, breaktime)
 			if ext == ".gif" or ext == ".mp4" or ext == ".webm":
-				os.system(mpv_path + "mpv.exe " + '"' + fullImagePath + '"' + " -msg-level=all=no -fs -loop-file=" + str(divsec)
+				os.system(mpv_path + "mpv.exe " + '"' + fullImagePath + '"' + " -ontop -msg-level=all=no -fs -loop-file=" + str(divsec)
 			  	+ ' -sub-file="modifiers/interval.srt" -sub-scale=0.7 -sub-pos=0 -sub-color=1.0/1.0/1.0/0.8 -sub-border-size=0 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.2')
 			else: 
 				os.system(mpv_path + "mpv.exe - -fs --image-display-duration=" + str(divsec) + ' "' + fullImagePath + '"' 
-				+ ' -sub-file="modifiers/interval.srt" -sub-scale=0.7 -sub-pos=0 -sub-color=1.0/1.0/1.0/0.8 -sub-border-size=0 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.2')
+				+ ' -ontop -sub-file="modifiers/interval.srt" -sub-scale=0.7 -sub-pos=0 -sub-color=1.0/1.0/1.0/0.8 -sub-border-size=0 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.2')
 			os.system(mpv_path + "mpv.exe " + '"' + inv_path + invader + '"' + " -msg-level=all=no -fs")
-			invaded = 1
+			invaded += 1
 			breaktime = breaktime - divsec
 		if ext == ".gif" or ext == ".mp4" or ext == ".webm":
 			os.system(mpv_path + "mpv.exe " + '"' + fullImagePath + '"' + " -msg-level=all=no -fs -loop-file=" + str(breaktime)
-			+ ' -sub-file="modifiers/interval.srt" -sub-scale=0.7 -sub-pos=0 -sub-color=1.0/1.0/1.0/0.8 -sub-border-size=0 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.2')
+			+ ' -ontop -sub-file="modifiers/interval.srt" -sub-scale=0.7 -sub-pos=0 -sub-color=1.0/1.0/1.0/0.8 -sub-border-size=0 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.2')
 		else:
 			os.system(mpv_path + "mpv.exe - -fs --image-display-duration=" + str(breaktime) + ' "' + fullImagePath + '"'
-			+ ' -sub-file="modifiers/interval.srt" -sub-scale=0.7 -sub-pos=0 -sub-color=1.0/1.0/1.0/0.8 -sub-border-size=0 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.2')
+			+ ' -ontop -sub-file="modifiers/interval.srt" -sub-scale=0.7 -sub-pos=0 -sub-color=1.0/1.0/1.0/0.8 -sub-border-size=0 -sub-bold=yes -sub-font="Tahoma" -sub-shadow-offset=-3 -sub-shadow-color=0.0/0.0/0.0/0.2')
 	return invaded
 
 #Gets general settings in class
@@ -252,11 +253,11 @@ class generalsettings():
 	def __init__(self):
 		self.breaktime = gen_config["Breaktime"]
 		self.checkp = gen_config["Start from Last Checkpoint?"]
-		if inv_config["Randomize Invasion Chance?"] == "ON":
+		if random_config["Randomize Invasion Chance?"] == "ON":
 			self.inv = random.randint(5, 100)
 		else:
 			self.inv = int(inv_config["Invasion Chance Percentage"])
-		if mod_config["Randomize Modifier Chance?"] == "ON":
+		if random_config["Randomize Modifier Chance?"] == "ON":
 			self.mod = random.randint(5, 100)
 		else:
 			self.mod = int(mod_config["Modifier Chance Percentage"])
@@ -264,7 +265,9 @@ class generalsettings():
 		self.checkinv = int(inv_config["Invasion Chance Increase on Checkpoint"])
 		self.invon = inv_config["Invasion Rounds?"]
 		self.modon = mod_config["Modifiers?"]
-
+		self.diemin = int(gen_config["Default Die Min Size"])
+		self.diemax = int(gen_config["Default Die Max Size"])
+		self.ranround = random_config["Randomized Rounds"]
 def general():
 	return generalsettings()
 
@@ -314,11 +317,9 @@ class cursesettings():
 		self.curselist = curselist
 		self.curse = (curse_config["Curses?"])
 		self.movebackmax = int(curse_config["Max Rounds to go back?"])
-		self.baseinv = int(curse_config["Base Curse Chance Percentage on Invasion"])
+		self.baseinv = int(curse_config["Chance of Curse Per Invasion"])
 		self.invnum = int(curse_config["Increase Invasion Chance by what %?"])
 		self.modnum = int(curse_config["Increase Modifier Chance by what %?"])
-		self.invinc = int(curse_config["Chance of Curse Increase per Invasion"])
-		self.invinc_checkp = int(curse_config["Chance of Curse Increase per Checkpoints"])
 		self.diemindec = int(curse_config["Decrease Die Min by?"])
 		self.diemaxdec = int(curse_config["Decrease Die Max by?"])
 
