@@ -62,6 +62,8 @@ def maingame():
     invaded_check = 0
     applycurse = 0
     moveback = 0
+    invasioncap = gen_set.invcap
+    modifiercap = gen_set.modcap
 
     #Checks the savedata for checkpoint(Will return 1 if no save)
     room = logic.loadsave()
@@ -90,6 +92,7 @@ def maingame():
     choice2 = ""
     skip = False
     activate = False
+    perkprimed = False
     cursed = False
 
 
@@ -204,15 +207,15 @@ def maingame():
                         pause -= 1
                 else:
                     pause = pausetime
-                    if preroom % 25 > room % 25 and room > preroom:
+                    if preroom // 25 < room // 25 and room > preroom:
                         if checkpointon == "ON":
                             logic.saveit(str(room - room%25))
-                        if invasionchance + gen_set.checkinv > 100:
-                            invasionchance = 100
+                        if invasionchance + gen_set.checkinv > invasioncap:
+                            invasionchance = invasioncap
                         else:
                             invasionchance += gen_set.checkinv
-                        if modifierchance + gen_set.checkmod > 100:
-                            modifierchance = 100
+                        if modifierchance + gen_set.checkmod > modifiercap:
+                            modifierchance = modifiercap
                         else:
                             modifierchance += gen_set.checkmod
                         if room % 25 != 0:
@@ -247,11 +250,11 @@ def maingame():
                     while invaded_check >= 1 and applycurse != 1 and cursechance > 0:
                         applycurse = random.randint(1, 100 // cursechance)
                         invaded_check -= 1
-                    if curse_set.curse == "ON" and applycurse == 1:
+                    if curse_set.curse == "ON" and applycurse == 1 and room < 100:
                         print("Cursed!")
                         cursed = True
                         curseprimed = False
-                    elif played % pointsperperk == 0 and perk_set.perks == "ON":
+                    elif played % pointsperperk == 0 and perk_set.perks == "ON" and room < 100:
                         print("Perk!")
                         perkprimed = False
                         reward = True
@@ -347,10 +350,11 @@ def maingame():
             draw_text_center("FapLand Completed!", get_font(40), 'white', 400, 100)
         
         #UI Info
-        draw_text("Points: " + str(played), get_font(16), 'white', 0, 30)
-        draw_text("Die Size: " + str(lowestroll) + ":" + str(highestroll), get_font(16), 'white', 0, 55)
+        if room < 100:
+            draw_text("Points: " + str(played), get_font(16), 'white', 0, 30)
+            draw_text("Die Size: " + str(lowestroll) + ":" + str(highestroll), get_font(16), 'white', 0, 55)
         #draw_text("Pause: " + str(perk_set.pausenum * myperks.count("Pause Each Video for 10 Seconds")), get_font(16), 'white', 0, 105)
-        draw_text("Skips: " + str(myperks.count("Skip 1 Video")), get_font(16), 'white', 0, 80)
+            draw_text("Skips: " + str(myperks.count("Skip 1 Video")), get_font(16), 'white', 0, 80)
 
         #if (preroom % 25 > room % 25 or room % 25 == 0) or gen_set.checkp == "ON" or room == 1:
         #if :
@@ -456,11 +460,11 @@ def maingame():
             CHECK = command.Button(image=None,pos=(400,150), text_input= "Play Intro?", font=get_font(20), base_color="white", hovering_color="grey")
         elif room < 100 and canplay:
             CHECK = command.Button(image=None,pos=(400,150), text_input= "Play Checkpoint?", font=get_font(20), base_color="white", hovering_color="grey")
-        if room >= 100 and canplay:
+        elif room >= 100 and canplay:
             CHECK = command.Button(image=None,pos=(400,180), text_input= "You Win!", font=get_font(20), base_color="white", hovering_color="grey")
         if canplay:
             CHECK.changeColor(PLAY_MOUSE)
-        if room % 25 == 0 or room >= 100 or room == 1 and canplay:
+        if room % 25 == 0 or room >= 100 or room == 1 and canplay and perkprimed == False and cursed == False:
             CHECK.update(screen)
             checkbox = pygame.Rect.scale_by(CHECK.text_rect, 1.2, 1.6)
             pygame.draw.rect(screen, 'white', checkbox, 3)
