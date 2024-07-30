@@ -23,6 +23,10 @@ Pack 2(Beats 2, Marcurial 2, Pendulum, Secret Island Invasion): https://gofile.i
 - Edit the "Game_Settings.txt" file to change settings to your liking
 - Launch the game from "main_game.exe"
 
+## Updating
+- To update, simply copy the everything in the new Faphero SP Ver.0.X folder into the old one. Left everything replace the old files.
+- The settings file is expanded every update, so you can't use the old one. If you delete it, playing the game will generate a new game settings file.
+
 ## Default Rules
 - Start each turn by pressing roll and get a number from 1 to 6
 - You will then move forward that many spaces and play the round asscociated the number on that space
