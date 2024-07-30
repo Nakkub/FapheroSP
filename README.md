@@ -24,7 +24,7 @@ Pack 2(Beats 2, Marcurial 2, Pendulum, Secret Island Invasion): https://gofile.i
 - Launch the game from "main_game.exe"
 
 ## Updating
-- To update, simply copy the everything in the new Faphero SP Ver.0.X folder into the old one. Left everything replace the old files.
+- To update, simply copy the everything in the new Faphero SP Ver.0.X folder into the old one. Let everything replace the old files.
 - The settings file is expanded every update, so you can't use the old one. If you delete it, playing the game will generate a new game settings file.
 
 ## Default Rules
