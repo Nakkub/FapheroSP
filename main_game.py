@@ -343,7 +343,7 @@ def maingame():
         screen.fill("black")
 
         #Draws game version and round on the screen
-        draw_text("FapLandSP VER.0.2", get_font(16), 'white', 0, 5)
+        draw_text("FapLandSP VER.0.4", get_font(16), 'white', 0, 5)
         if room < 100:
             draw_text_center("Round:"+ str(room), get_font(50), 'white', 400, 100)
         else:
