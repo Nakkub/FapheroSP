@@ -43,16 +43,6 @@ Pack 2(Beats 2, Marcurial 2, Pendulum, Secret Island Invasion): https://gofile.i
 - You may remove any of the videos in the intervals and invasions folders or add your own.
 - You don't need to change the custom file locations in the settings file unless you change my folder structure or want to store the videos in a different place than the game.
 
-## Credits
-### Fapland Videos
-Sax, Ninza, Nananashi, Bastati, PsychoSplash, DannySir, N_N, OP is a f*ggot, Reverd, P, Raptor, Gu, Fryz3, Phantom Fapper, theblackndsage, SNanaya
-
-### Invasion Videos(Fap Hero Beats 3)
-PixelFH
-
-### Original FapLand creator
-Malu
-
 ## Changelog...
 ### Ver.0.4
 - Changes
@@ -106,3 +96,13 @@ Malu
   - Will no longer crash if a folder isn't found.
   - Will no longer crash if value chance is set to zero.
   - Default settings rebalanced.
+
+## Credits
+### Fapland Videos
+Sax, Ninza, Nananashi, Bastati, PsychoSplash, DannySir, N_N, OP is a f*ggot, Reverd, P, Raptor, Gu, Fryz3, Phantom Fapper, theblackndsage, SNanaya
+
+### Invasion Videos(Fap Hero Beats 3)
+PixelFH
+
+### Original FapLand creator
+Malu
