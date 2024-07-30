@@ -54,6 +54,23 @@ PixelFH
 Malu
 
 ## Changelog...
+### Ver.0.4
+- Changes
+  - Added randomized rounds mode. 
+    - The rolling, progression, invasion, modifiers and checkpoints work as normal. However, the video played at each round will be random and will not correspond to the round number
+    - Videos will not repeat until all 96 have been played.
+  - New Settings
+    -  Modifier Chance Cap
+    -  Invasion Chance Cap
+    - Randomized Rounds
+    - Randomized Invasion Chance
+    - Randomized Modifier Chance
+    - Chance of Curse per Invasion
+- Fixes
+  - Fixed crash when the minimum die size is larger than the maximum
+  - Fixed bug where the rooms would decrease infinitely upon being cursed
+  - Fixed bug where the checkpoint videos would play every time you moved negative spaces
+  - Fixed bug where videos would play behind the game window instead of in front
 ### Ver.0.3
 - Changes
   - Added Curse system. Every round has a chance to give a negative effect called a curse. The chance increases with every invasion.
